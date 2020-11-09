@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Recombine",
+        "repositoryURL": "https://github.com/ReSwift/Recombine",
+        "state": {
+          "branch": null,
+          "revision": "f3a0889514bb0197850f578a31e07335d68b4c8b",
+          "version": "0.6.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

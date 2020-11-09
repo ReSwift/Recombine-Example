@@ -1,0 +1,5 @@
+sources:
+    - Shared
+templates:
+    - Templates
+output: Shared/Generated

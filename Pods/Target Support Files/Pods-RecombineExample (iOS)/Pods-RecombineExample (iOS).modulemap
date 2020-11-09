@@ -1,0 +1,6 @@
+framework module Pods_RecombineExample__iOS_ {
+  umbrella header "Pods-RecombineExample (iOS)-umbrella.h"
+
+  export *
+  module * { export * }
+}
