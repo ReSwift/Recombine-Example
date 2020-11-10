@@ -31,8 +31,6 @@
 		FA01E92B2558F95200999068 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA01E9292558F95200999068 /* Store.swift */; };
 		FA01E9312558F9D900999068 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA01E9302558F9D900999068 /* State.swift */; };
 		FA01E9322558F9D900999068 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA01E9302558F9D900999068 /* State.swift */; };
-		FA01E9402558FC4400999068 /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA01E93F2558FC4400999068 /* UserDefault.swift */; };
-		FA01E9412558FC4400999068 /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA01E93F2558FC4400999068 /* UserDefault.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,7 +76,6 @@
 		FA01E9222558F92300999068 /* Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reducer.swift; sourceTree = "<group>"; };
 		FA01E9292558F95200999068 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		FA01E9302558F9D900999068 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
-		FA01E93F2558FC4400999068 /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
 		FBD3691359AD4514AD892C43 /* Pods-RecombineExample (macOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RecombineExample (macOS).debug.xcconfig"; path = "Target Support Files/Pods-RecombineExample (macOS)/Pods-RecombineExample (macOS).debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -151,7 +148,6 @@
 				FA01E8A82558F60C00999068 /* RecombineExampleApp.swift */,
 				FA01E8A92558F60C00999068 /* ContentView.swift */,
 				FA01E8AA2558F60D00999068 /* Assets.xcassets */,
-				FA01E93F2558FC4400999068 /* UserDefault.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -451,7 +447,6 @@
 				FA01E9092558F89800999068 /* AutoCodable.generated.swift in Sources */,
 				FA01E9232558F92300999068 /* Reducer.swift in Sources */,
 				FA01E9112558F91100999068 /* Action.swift in Sources */,
-				FA01E9402558FC4400999068 /* UserDefault.swift in Sources */,
 				FA01E9312558F9D900999068 /* State.swift in Sources */,
 				FA01E8D32558F60E00999068 /* ContentView.swift in Sources */,
 				FA01E8D12558F60E00999068 /* RecombineExampleApp.swift in Sources */,
@@ -467,7 +462,6 @@
 				FA01E90A2558F89800999068 /* AutoCodable.generated.swift in Sources */,
 				FA01E9242558F92300999068 /* Reducer.swift in Sources */,
 				FA01E9122558F91100999068 /* Action.swift in Sources */,
-				FA01E9412558FC4400999068 /* UserDefault.swift in Sources */,
 				FA01E9322558F9D900999068 /* State.swift in Sources */,
 				FA01E8D42558F60E00999068 /* ContentView.swift in Sources */,
 				FA01E8D22558F60E00999068 /* RecombineExampleApp.swift in Sources */,

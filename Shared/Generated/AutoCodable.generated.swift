@@ -3,11 +3,18 @@
 
 extension Redux.Action.Refined {
     enum CodingKeys: String, CodingKey {
+        case state
         case modify
         case setText
     }
     internal init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        if container.allKeys.contains(.state), try container.decodeNil(forKey: .state) == false {
+            var associatedValues = try container.nestedUnkeyedContainer(forKey: .state)
+            let associatedValue0 = try associatedValues.decode(Redux.State.self)
+            self = .state(associatedValue0)
+            return
+        }
         if container.allKeys.contains(.modify), try container.decodeNil(forKey: .modify) == false {
             var associatedValues = try container.nestedUnkeyedContainer(forKey: .modify)
             let associatedValue0 = try associatedValues.decode(Modification.self)
@@ -25,6 +32,9 @@ extension Redux.Action.Refined {
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
+        case let .state(associatedValue0):
+            var associatedValues = container.nestedUnkeyedContainer(forKey: .state)
+            try associatedValues.encode(associatedValue0)
         case let .modify(associatedValue0):
             var associatedValues = container.nestedUnkeyedContainer(forKey: .modify)
             try associatedValues.encode(associatedValue0)

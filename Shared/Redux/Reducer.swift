@@ -4,6 +4,8 @@ extension Redux {
     enum Reducer {
         static let main = MutatingReducer<State, Action.Refined> { state, action in
             switch action {
+            case let .state(s):
+                state = s
             case let .modify(action):
                 state.counter = modification(state: state.counter, action: action)
             case let .setText(text):

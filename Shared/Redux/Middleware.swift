@@ -3,7 +3,7 @@ import Combine
 import Foundation
 
 extension Redux {
-    static let middleware: Middleware<State, Action.Raw, Action.Refined> = Middleware.map { state, action -> AnyPublisher<Action.Refined, Never> in
+    static let middleware: Middleware<State, Action.Raw, Action.Refined> = Middleware { state, action -> AnyPublisher<Action.Refined, Never> in
         switch action {
         case let .networkCall(url):
             return URLSession.shared

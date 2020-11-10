@@ -1,5 +1,5 @@
 enum Redux {
-    struct State {
+    struct State: Codable, Equatable {
         var text: String?
         var counter: Int
     }
