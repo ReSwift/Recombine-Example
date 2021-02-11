@@ -8,6 +8,18 @@ struct RecombineExampleApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(Redux.store)
+                .environmentObject(
+                    Redux.store.lensing(
+                        state: \.counter,
+                        actions: Redux.Action.Refined.modify
+                    )
+                )
+                .environmentObject(
+                    Redux.store.lensing(
+                        state: \.text,
+                        actions: Redux.Action.Refined.setText
+                    )
+                )
         }
     }
 }

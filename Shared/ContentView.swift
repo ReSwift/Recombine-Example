@@ -3,7 +3,10 @@ import Recombine
 import Combine
 
 struct ContentView: View {
-    @EnvironmentObject var store: Store<Redux.State, Redux.Action.Raw, Redux.Action.Refined>
+    @EnvironmentObject var store: Store
+    @EnvironmentObject var counterStore: SubStore<Int, Redux.Action.Refined.Modification>
+    @EnvironmentObject var textStore: SubStore<String?, String?>
+
     static let clearSavedSignal = PassthroughSubject<(), Never>()
     @State var refinedActions: [TimeInterval: [Redux.Action.Refined]] = [:]
     @State var started = Date()
@@ -15,7 +18,7 @@ struct ContentView: View {
             .zip(store.$state.dropFirst())
             .compactMap { action, state in
                 switch action {
-                case .state, .setText:
+                case .state:
                     return nil
                 default:
                     return state
@@ -26,6 +29,7 @@ struct ContentView: View {
     }
 
     func replay(actions: [TimeInterval: [Redux.Action.Refined]]) {
+        started = Date()
         actions
             .sorted { $0.key < $1.key }
             .publisher
@@ -38,15 +42,15 @@ struct ContentView: View {
             .handleEvents(receiveOutput: { value in
                 print(value)
             })
-            .map(Redux.StoreType.ActionStrata.refined)
+            .map(ActionStrata.refined)
             .prefix(untilOutputFrom: Self.clearSavedSignal)
             .subscribe(Redux.store)
     }
 
     var body: some View {
         VStack {
-            if let text = store.state.text {
-                Text("Error: \(text)")
+            if let text = textStore.state {
+                Text(text)
             }
             Spacer()
             HStack {
@@ -55,9 +59,9 @@ struct ContentView: View {
                 }, label: {
                     Image(systemName: "minus.circle")
                 })
-                Text("\(store.state.counter)")
+                Text("\(counterStore.state)")
                 Button(action: {
-                    store.dispatch(refined: .modify(.increase))
+                    counterStore.dispatch(refined: .increase)
                 }, label: {
                     Image(systemName: "plus.circle")
                 })
@@ -70,31 +74,12 @@ struct ContentView: View {
                 Self.clearSavedSignal.send(())
             }
             Button("Replay Actions") {
+                started = Date()
                 replay(actions: refinedActions)
             }
-            Button("Replay States") {
-                started = Date()
-                store.dispatch(refined: .state(states[0]))
-                refinedActions
-                    .sorted { $0.key < $1.key }
-                    .map(\.key)
-                    .publisher
-                    .zip((2...states.count).publisher)
-                    .flatMap { seconds, location -> AnyPublisher<Int, Never> in
-                        return Just(location).delay(
-                            for: .seconds(seconds - Date().timeIntervalSince(started)),
-                            scheduler: RunLoop.main
-                        )
-                        .eraseToAnyPublisher()
-                    }
-                    .prefix(untilOutputFrom: Self.clearSavedSignal)
-                    .prepend(1)
-                    .map(Double.init)
-                    .assign(to: \.sliderLocation, on: self)
-                    .store(in: &cancellables)
+            Button("Randomly Set Text") {
+                textStore.dispatch(refined: Int.random(in: .min...Int.max).description)
             }
-            .disabled(states.count < 2)
-
             Button("Load Actions From Disk") {
                 UserDefaults.standard.data(forKey: "actions").map {
                     try! JSONDecoder().decode([TimeInterval: [Redux.Action.Refined]].self, from: $0)
@@ -104,7 +89,7 @@ struct ContentView: View {
             .disabled(UserDefaults.standard.data(forKey: "actions") == nil)
 
             Slider(value: $sliderLocation, in: 1...Double(max(2, states.count)), step: 1)
-                .padding([.leading, .trailing])
+                .padding([.leading, .trailing, .bottom])
                 .disabled(states.count < 2)
         }
         .onChange(of: sliderLocation) { value in
