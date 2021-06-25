@@ -7,9 +7,9 @@ typealias SubStore<SubState: Equatable, SubAction> = LensedStore<Redux.State, Su
 extension Redux {
     static let store = Store(
         state: .init(counter: 0),
-        stateEquality: ==,
         reducer: Reducer.main,
-        middleware: middleware,
+        middleware: .init(),
+        thunk: thunk,
         publishOn: RunLoop.main
     )
 }

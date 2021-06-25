@@ -17,7 +17,7 @@ struct RecombineExampleApp: App {
                 .environmentObject(
                     Redux.store.lensing(
                         state: \.text,
-                        actions: Redux.Action.Refined.setText
+                        actions: { .setText($0) }
                     )
                 )
         }

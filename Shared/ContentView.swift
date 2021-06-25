@@ -14,18 +14,19 @@ struct ContentView: View {
     @State var states: [Redux.State] = [Redux.store.state]
     @State var cancellables = Set<AnyCancellable>()
     var statesPublisher: AnyPublisher<Redux.State, Never> {
-        return store.refinedActions
-            .zip(store.$state.dropFirst())
-            .compactMap { action, state in
-                switch action {
-                case .state:
-                    return nil
-                default:
-                    return state
-                }
+        store.actionsPairedWithState.flatMap { (actions, state) in
+            actions.publisher.map { ($0, state.next) }
+        }
+        .compactMap { action, state in
+            switch action {
+            case .state:
+                return nil
+            default:
+                return state
             }
-            .receive(on: RunLoop.main)
-            .eraseToAnyPublisher()
+        }
+//        .prepend(store.$state.first())
+        .eraseToAnyPublisher()
     }
 
     func replay(actions: [TimeInterval: [Redux.Action.Refined]]) {
@@ -53,19 +54,7 @@ struct ContentView: View {
                 Text(text)
             }
             Spacer()
-            HStack {
-                Button(action: {
-                    store.dispatch(refined: .modify(.decrease))
-                }, label: {
-                    Image(systemName: "minus.circle")
-                })
-                Text("\(counterStore.state)")
-                Button(action: {
-                    counterStore.dispatch(refined: .increase)
-                }, label: {
-                    Image(systemName: "plus.circle")
-                })
-            }
+            CounterView()
             Spacer()
             Button("Network request") {
                 store.dispatch(raw: .networkCall(URL(string: "https://www.google.com")!))
@@ -100,7 +89,7 @@ struct ContentView: View {
             sliderLocation = .init(states.count)
         }
         .onReceive(
-            Redux.store.refinedActions.receive(on: RunLoop.main)
+            Redux.store.refinedActions.flatMap(\.publisher).receive(on: RunLoop.main)
         ) { action in
             switch action {
             case .modify:
