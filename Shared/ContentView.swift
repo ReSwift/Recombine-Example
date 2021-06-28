@@ -3,9 +3,15 @@ import Recombine
 import Combine
 
 struct ContentView: View {
-    @EnvironmentObject var store: Store
-    @EnvironmentObject var counterStore: SubStore<Int, Redux.Action.Refined.Modification>
-    @EnvironmentObject var textStore: SubStore<String?, String?>
+    @ObservedObject var store = Redux.store
+    @StateObject var counterStore = Redux.store.lensing(
+        state: \.counter,
+        actions: { .modify($0) }
+    )
+    @StateObject var textStore = Redux.store.lensing(
+        state: \.text,
+        actions: { .setText($0) }
+    )
 
     static let clearSavedSignal = PassthroughSubject<(), Never>()
     @State var refinedActions: [TimeInterval: [Redux.Action.Refined]] = [:]
@@ -25,7 +31,6 @@ struct ContentView: View {
                 return state
             }
         }
-//        .prepend(store.$state.first())
         .eraseToAnyPublisher()
     }
 

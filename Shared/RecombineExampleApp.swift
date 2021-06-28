@@ -7,19 +7,6 @@ struct RecombineExampleApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(Redux.store)
-                .environmentObject(
-                    Redux.store.lensing(
-                        state: \.counter,
-                        actions: Redux.Action.Refined.modify
-                    )
-                )
-                .environmentObject(
-                    Redux.store.lensing(
-                        state: \.text,
-                        actions: { .setText($0) }
-                    )
-                )
         }
     }
 }

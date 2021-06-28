@@ -2,7 +2,10 @@ import SwiftUI
 import Recombine
 
 struct CounterView: View {
-    @EnvironmentObject var store: SubStore<Int, Redux.Action.Refined.Modification>
+    @StateObject var store = Redux.store.lensing(
+        state: \.counter,
+        actions: { .modify($0) }
+    )
 
     var body: some View {
         HStack {
@@ -18,19 +21,5 @@ struct CounterView: View {
                 Image(systemName: "plus.circle")
             })
         }
-    }
-}
-
-struct CounterView_Previews: PreviewProvider {
-    static var previews: some View {
-        CounterView()
-//            .environmentObject(
-//                PreviewStore(
-//                    state: .init(counter: 1100)
-//                ).lensing(
-//                    state: \.counter,
-//                    actions: { .modify($0) }
-//                )
-//            )
     }
 }
